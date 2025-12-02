@@ -1,18 +1,19 @@
-import { Link, Stack } from 'expo-router';
-import { View } from 'react-native';
-import { Text } from '~/components/ui/text';
+import { useEffect } from 'react';
+import { router } from 'expo-router';
+import { View, ActivityIndicator } from 'react-native';
 
 export default function NotFoundScreen() {
-  return (
-    <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <View>
-        <Text>This screen doesn't exist.</Text>
+  // Auto-redirect to home - handles hot reload route confusion
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      router.replace('/');
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, []);
 
-        <Link href='/'>
-          <Text>Go to home screen!</Text>
-        </Link>
-      </View>
-    </>
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" />
+    </View>
   );
 }
